@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --border: #334155;
+  --text-primary: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent: #2563eb;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  color: var(--text-primary);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(37, 99, 235, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 110% 110%, rgba(16, 185, 129, 0.1), transparent 60%),
+    var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+@layer components {
+  /* Glassmorphism card */
+  .glass {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.72), rgba(30, 41, 59, 0.45));
+    border: 1px solid rgba(51, 65, 85, 0.8);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 8px 32px rgba(2, 6, 23, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .skeleton {
+    @apply rounded bg-slate-700/50;
+    background-image: linear-gradient(90deg, rgba(51, 65, 85, 0) 0, rgba(148, 163, 184, 0.15) 50%, rgba(51, 65, 85, 0) 100%);
+    background-size: 800px 100%;
+    @apply animate-shimmer;
+  }
+
+  .select {
+    @apply h-9 w-full rounded-lg border border-border bg-slate-900/60 px-3 text-sm text-fg focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+input,
+textarea {
+  user-select: text;
+}
