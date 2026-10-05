@@ -1,0 +1,20 @@
+name: Build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm install
+        working-directory: cloudbox-abacus
+      - run: cargo install tauri-cli --version "^2" --locked
+      - run: cargo tauri build --bundles nsis
+        working-directory: cloudbox-abacus
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CloudBox-Setup
+          path: cloudbox-abacus/src-tauri/target/release/bundle/nsis/*.exe
