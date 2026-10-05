@@ -1,0 +1,42 @@
+name: Build CloudBox for Windows
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            cloudbox-abacus/src-tauri/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install deps
+        run: npm install
+        working-directory: cloudbox-abacus
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli --version "^2" --locked
+      - name: Build
+        run: cargo tauri build --bundles nsis,msi
+        working-directory: cloudbox-abacus
+      - name: Upload exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: CloudBox-Windows-Setup
+          path: cloudbox-abacus/src-tauri/target/release/bundle/nsis/*.exe
+          retention-days: 30
+      - name: Upload msi
+        uses: actions/upload-artifact@v4
+        with:
+          name: CloudBox-Windows-MSI
+          path: cloudbox-abacus/src-tauri/target/release/bundle/msi/*.msi
+          retention-days: 30
